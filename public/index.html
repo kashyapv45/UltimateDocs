@@ -1,0 +1,101 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Ultimate Docs</title>
+  <link rel="stylesheet" href="/vendor/quill/quill.snow.css">
+  <link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+  <header class="topbar">
+    <a href="#/" class="brand">Ultimate Docs</a>
+    <div id="user-box" hidden>
+      <span id="user-name"></span>
+      <button id="logout" class="link">Sign out</button>
+    </div>
+  </header>
+
+  <div id="toast" role="status" aria-live="polite" hidden></div>
+
+  <!-- Login -->
+  <main id="login-view" class="view narrow" hidden>
+    <h1>Sign in</h1>
+    <form id="login-form">
+      <label>Email <input name="email" type="email" required autocomplete="username" value="alice@ultimate.test"></label>
+      <label>Password <input name="password" type="password" required autocomplete="current-password"></label>
+      <p class="error" id="login-error" hidden></p>
+      <button type="submit" class="primary">Sign in</button>
+    </form>
+    <div class="hint">
+      <strong>Demo accounts</strong> (password <code>demo1234</code>):
+      <ul>
+        <li><button class="link fill" data-email="alice@ultimate.test">alice@ultimate.test</button> owns the welcome doc</li>
+        <li><button class="link fill" data-email="bob@ultimate.test">bob@ultimate.test</button> has edit access to it</li>
+        <li><button class="link fill" data-email="carol@ultimate.test">carol@ultimate.test</button> starts with nothing shared</li>
+      </ul>
+    </div>
+  </main>
+
+  <!-- Document list -->
+  <main id="list-view" class="view" hidden>
+    <div class="list-actions">
+      <button id="new-doc" class="primary">+ New document</button>
+      <label class="button">
+        Upload file
+        <input id="upload" type="file" accept=".txt,.md,.docx" hidden>
+      </label>
+      <span class="muted">Upload turns a <strong>.txt</strong>, <strong>.md</strong> or <strong>.docx</strong> file (max 5 MB) into a new editable document.</span>
+    </div>
+    <section>
+      <h2>My documents</h2>
+      <ul id="owned-list" class="doc-list"></ul>
+    </section>
+    <section>
+      <h2>Shared with me</h2>
+      <ul id="shared-list" class="doc-list"></ul>
+    </section>
+  </main>
+
+  <!-- Editor -->
+  <main id="editor-view" class="view" hidden>
+    <div class="doc-header">
+      <a href="#/" class="link back" aria-label="Back to documents">←</a>
+      <input id="doc-title" aria-label="Document title" maxlength="200">
+      <span id="role-badge" class="badge"></span>
+      <span id="save-status" class="muted" aria-live="polite"></span>
+      <button id="export-btn" title="Opens the print dialog; choose Save as PDF">Export PDF</button>
+      <button id="share-btn" hidden>Share</button>
+    </div>
+    <p id="doc-meta" class="muted"></p>
+    <div id="conflict" class="banner" hidden>
+      Someone else saved this document after you opened it. Your latest changes were not saved.
+      <button id="reload-doc">Reload latest</button>
+    </div>
+    <div id="editor-wrap"><div id="editor"></div></div>
+  </main>
+
+  <!-- Share dialog -->
+  <dialog id="share-dialog">
+    <form id="share-form">
+      <h2>Share document</h2>
+      <div class="row">
+        <input name="email" type="email" list="user-options" placeholder="Email, e.g. bob@ultimate.test" required aria-label="Email">
+        <datalist id="user-options"></datalist>
+        <select name="role" aria-label="Access level">
+          <option value="editor">Can edit</option>
+          <option value="viewer">Can view</option>
+        </select>
+        <button type="submit" class="primary">Share</button>
+      </div>
+      <p class="error" id="share-error" hidden></p>
+      <h3>People with access</h3>
+      <ul id="share-list" class="share-list"></ul>
+      <div class="dialog-actions"><button type="button" id="close-share">Done</button></div>
+    </form>
+  </dialog>
+
+  <script src="/vendor/quill/quill.js"></script>
+  <script src="/app.js"></script>
+</body>
+</html>
